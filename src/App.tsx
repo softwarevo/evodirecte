@@ -62,7 +62,7 @@ export default function App() {
           alt="evoDirecte Logo" 
           onDoubleClick={handleLogoDoubleClick}
           className={`h-12 w-12 cursor-pointer transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
-          style={{ imageRendering: isPixelated ? 'pixelated' : 'auto', filter: isPixelated ? 'blur(1.5px)' : 'none' }}
+          style={{ imageRendering: isPixelated ? 'pixelated' : 'auto' }}
         />
         <a href="https://github.evodirecte.qzz.io" target="_blank" rel="noreferrer">
           <SiGithub className="h-10 w-10" />
