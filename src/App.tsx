@@ -1,6 +1,14 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Check, X, Minus } from "lucide-react"
 import { SiGithub } from '@icons-pack/react-simple-icons';
@@ -17,6 +25,16 @@ export default function App() {
   const [data, setData] = useState<GistData | null>(null)
   const [fakeProgress, setFakeProgress] = useState(0)
   const [isPixelated, setIsPixelated] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
+  const searchParams = useMemo(() => new URLSearchParams(window.location.search), [])
+
+  // Check for cameFrom=evoMoyenne
+  useEffect(() => {
+    if (searchParams.get("cameFrom") === "evoMoyenne") {
+      setIsDialogOpen(true)
+    }
+  }, [searchParams])
 
   // Fetch
   useEffect(() => {
@@ -55,6 +73,32 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col max-w-4xl mx-auto p-6 font-sans">
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold flex items-center gap-2">
+              🫡 Adieu, evoMoyenne…
+            </DialogTitle>
+            <DialogDescription className="text-base space-y-4 pt-4">
+              <p>
+                Nous avons décidé d’abandonner evoMoyenne pour un tout nouveau projet nommé <strong>evoDirecte</strong>.
+              </p>
+              <p>
+                Rassurez-vous : evoDirecte contiendra toutes les fonctionnalités d’evoMoyenne, et même plus ! Devoirs, absences, messages, emploi du temps et bien plus. En fait, c’est comme le vrai EcoleDirecte… Mais en mieux !
+              </p>
+              <p>
+                On vous laisse explorer cette page pour en savoir plus sur le futur de votre assistant scolaire.
+              </p>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button" size="lg" onClick={() => setIsDialogOpen(false)} className="w-full sm:w-auto">
+              Super
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* HEADER */}
       <header className="flex justify-between items-center py-6">
         <img 
