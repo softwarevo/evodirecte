@@ -61,7 +61,7 @@ export default function App() {
           src="/logo.svg" 
           alt="evoDirecte Logo" 
           onDoubleClick={handleLogoDoubleClick}
-          className={`h-12 w-12 cursor-pointer transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
+          className={`h-12 w-12 cursor-pointer transition-all dark-invert ${isPixelated ? 'pixelated' : ''}`} 
           style={{ imageRendering: isPixelated ? 'pixelated' : 'auto', filter: isPixelated ? 'blur(1.5px)' : 'none' }}
         />
         <a href="https://github.evodirecte.qzz.io" target="_blank" rel="noreferrer">
@@ -133,7 +133,7 @@ export default function App() {
               </TableRow>
               <TableRow>
                 <TableCell>Moyennes et partage de notes</TableCell>
-                <TableCell className="text-center"><Minus className="mx-auto text-yellow-500 h-5 w-5" /></TableCell>
+                <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
                 <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
               </TableRow>
               <TableRow>
