@@ -84,7 +84,7 @@ export default function App() {
                 Nous avons décidé d’abandonner evoMoyenne pour un tout nouveau projet nommé <strong>evoDirecte</strong>.
               </p>
               <p>
-                Rassurez-vous : evoDirecte contiendra toutes les fonctionnalités d’evoMoyenne, et même plus ! Devoirs, absences, messages, emploi du temps et bien plus. En fait, c’est comme le vrai EcoleDirecte… Mais en mieux !
+                Rassurez-vous : evoDirecte contiendra toutes les fonctionnalités d’evoMoyenne, et même plus ! Devoirs, absences, messages, emploi du temps, révisions intelligentes et bien plus. En fait, c’est comme le vrai EcoleDirecte… Mais en mieux !
               </p>
               <p>
                 On vous laisse explorer cette page pour en savoir plus sur le futur de votre assistant scolaire.
@@ -145,7 +145,7 @@ export default function App() {
 
         {/* COMPARAISON */}
         <div className="space-y-4">
-          <h3 className="text-2xl font-semibold text-center">evoDirecte vs EcoleDirecte</h3>
+          <h3 className="text-2xl font-semibold text-center">evoDirecte 🗿 vs EcoleDirecte 💩</h3>
           <Table>
             <TableHeader>
               <TableRow>
@@ -184,6 +184,11 @@ export default function App() {
                 <TableCell>Système d'amis</TableCell>
                 <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
                 <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Leçons type Duolingo et évals blanches fictives</TableCell>
+                <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
+                <TabkeCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
               </TableRow>
             </TableBody>
           </Table>
