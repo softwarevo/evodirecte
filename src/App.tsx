@@ -188,7 +188,7 @@ export default function App() {
               <TableRow>
                 <TableCell>Leçons type Duolingo et évals blanches fictives</TableCell>
                 <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
-                <TabkeCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
+                <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
               </TableRow>
             </TableBody>
           </Table>
