@@ -79,9 +79,15 @@ export default function App() {
         // The gist has a syntax error (missing comma after startDate), so we try to fix it
         try {
           return JSON.parse(text);
-        } catch {
+        } catch (firstParseError) {
+          console.error("Erreur lors du premier JSON.parse du gist, tentative de correction du texte :", firstParseError);
           const fixedText = text.replace(/"startDate":\s*"([^"]+)"\s*("eta"|eta)/, '"startDate": "$1", $2');
-          return JSON.parse(fixedText);
+          try {
+            return JSON.parse(fixedText);
+          } catch (secondParseError) {
+            console.error("Erreur lors du second JSON.parse après correction du gist :", secondParseError);
+            throw new Error("Impossible d'analyser le contenu du gist même après tentative de correction.");
+          }
         }
       })
       .then((json: GistData) => {
@@ -178,13 +184,19 @@ export default function App() {
 
       {/* HEADER */}
       <header className="flex justify-between items-center py-6">
-        <img 
-          src="/logo.svg" 
-          alt="evoDirecte Logo" 
+        <button
+          type="button"
           onDoubleClick={handleLogoDoubleClick}
-          className={`h-12 w-12 cursor-pointer transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
-          style={{ imageRendering: isPixelated ? 'pixelated' : 'auto' }}
-        />
+          aria-label="Activer l’easter egg du logo evoDirecte"
+          className="bg-transparent border-none p-0 cursor-pointer"
+        >
+          <img 
+            src="/logo.svg" 
+            alt="evoDirecte Logo" 
+            className={`h-12 w-12 transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
+            style={{ imageRendering: isPixelated ? 'pixelated' : 'auto' }}
+          />
+        </button>
 
         <div className="flex-1 flex justify-center">
           {remainingTime && (
@@ -195,7 +207,12 @@ export default function App() {
           )}
         </div>
 
-        <a href="https://github.evodirecte.qzz.io" target="_blank" rel="noreferrer">
+        <a
+          href="https://github.evodirecte.qzz.io"
+          target="_blank"
+          rel="noreferrer noopener"
+          aria-label="Ouvrir le dépôt GitHub dans un nouvel onglet"
+        >
           <SiGithub className="h-10 w-10" />
         </a>
       </header>
