@@ -51,6 +51,7 @@ export default function App() {
   const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false)
   const [isSeedlingDialogOpen, setIsSeedlingDialogOpen] = useState(false)
   const [now, setNow] = useState(new Date())
+  const [error, setError] = useState<string | null>(null)
 
   const searchParams = useMemo(() => new URLSearchParams(window.location.search), [])
 
@@ -83,11 +84,20 @@ export default function App() {
       })
       .then((json: GistData) => {
         setData(json)
+        setError(null)
       })
-      .catch(err => console.error("Erreur de fetch:", err))
+      .catch(err => {
+        console.error("Fetch error:", err)
+        setError("Impossible de charger les données. Veuillez réessayer plus tard.")
+        setData(null)
+      })
   }, [])
 
   const { progress, progressText, etaDate, remainingTime } = useMemo(() => {
+    if (error) {
+      return { progress: 0, progressText: "Erreur de chargement", etaDate: null, remainingTime: null };
+    }
+
     if (!data) return { progress: 0, progressText: "Chargement...", etaDate: null, remainingTime: null };
 
     const start = parse(data.startDate, "dd/MM/yyyy", new Date());
@@ -115,7 +125,7 @@ export default function App() {
       etaDate: eta,
       remainingTime: isAfter(eta, now) ? { days, hours } : null
     };
-  }, [data, now]);
+  }, [data, now, error]);
 
   const formattedEta = useMemo(() => {
     if (!etaDate) return "";
