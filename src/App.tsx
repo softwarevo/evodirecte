@@ -356,11 +356,6 @@ export default function App() {
       <footer className="py-6 text-center text-sm text-muted-foreground border-t mt-auto">
         Fait avec 🍪 et 🧋 par <a href="https://github.com/softwarevo" className="underline hover:text-primary">evoSoftware</a>
       </footer>
-    </div>
-  )
-  return (
-    <>
-      {/* Existing UI content goes here */}
 
       {/* Accessible live region for loading / progress text */}
       <div
@@ -370,6 +365,6 @@ export default function App() {
       >
         {progressText}
       </div>
-    </>
+    </div>
   )
 }
