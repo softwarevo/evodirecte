@@ -1,39 +1,38 @@
-name: Deploy to GitHub Pages
+name: Cloudflare Pages Deployment Status
 
 on:
   push:
     branches: ["**"]
 
 permissions:
-  contents: write
+  deployments: write
+  contents: read
 
 jobs:
-  build-and-deploy:
+  update-status:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Create GitHub Deployment
+        uses: chrnorm/deployment-action@v2
+        id: deployment
         with:
-          node-version: 20
-          cache: 'npm'
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          environment: ${{ github.ref_name == 'main' && 'production' || github.ref_name }}
+          description: "Build & Deploy by Cloudflare Pages"
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
-        env:
-          VITE_BRANCH_NAME: ${{ github.ref_name }}
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Wait for Cloudflare & Update Status
+        uses: cloudflare/pages-action@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          destination_dir: ${{ github.ref_name == 'main' && '.' || github.ref_name }}
-          keep_files: true 
-          cname: evodirecte.qzz.io
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: "evodirecte"
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Deployment Status to Success
+        uses: chrnorm/deployment-status@v2
+        if: success()
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: "success"
+          environment-url: https://${{ github.ref_name == 'main' && '' || format('{0}.', github.ref_name) }}evodirecte.qzz.io
