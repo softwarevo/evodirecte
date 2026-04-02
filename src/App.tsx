@@ -178,13 +178,19 @@ export default function App() {
             <Button type="button" size="lg" onClick={() => setIsDialogOpen(false)} className="w-full sm:w-auto">
               Super
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* HEADER */}
-      <header className="flex justify-between items-center py-6">
         <button
+          type="button"
+
+          aria-label="Activer l’easter egg du logo evoDirecte"
+          className="bg-transparent border-none p-0 cursor-pointer"
+        >
+          <img 
+            src="/logo.svg" 
+            alt="evoDirecte Logo" 
+            className={`h-12 w-12 transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
+            style={{ imageRendering: isPixelated ? 'pixelated' : 'auto' }}
+          />
+        </button>
           type="button"
           onDoubleClick={handleLogoDoubleClick}
           aria-label="Activer l’easter egg du logo evoDirecte"
