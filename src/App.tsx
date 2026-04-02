@@ -134,7 +134,7 @@ export default function App() {
   // Gestion du bouton Early Access
   const handleSeedlingClick = () => {
     if (data?.earlyAccess) {
-      window.open("https://seedling.evodirecte.qzz.io", "_blank", "noopener,noreferrer")
+      window.open("https://evodirecte.qzz.io/seedling", "_blank", "noopener,noreferrer")
     } else {
       setIsSeedlingDialogOpen(true)
     }
@@ -186,7 +186,7 @@ export default function App() {
                 L'accès à <strong>evoDirecte Seedling</strong> (la version bêta) n'est pas encore ouvert au public.
               </p>
               <p>
-                Nous travaillons dur pour vous offrir la meilleure expérience possible. Revenez très bientôt pour tester les premières fonctionnalités en avant-première !
+                Nous travaillons dur pour t'offrir la meilleure expérience possible. Reviens très bientôt pour tester les premières fonctionnalités en avant-première !
               </p>
             </DialogDescription>
           </DialogHeader>
