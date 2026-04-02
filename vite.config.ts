@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
   const branchName = process.env.GITHUB_REF_NAME || process.env.VITE_BRANCH_NAME;
 
   const base = branchName && branchName !== 'main' 
