@@ -18,6 +18,32 @@ function sanitizeBranchName(rawBranchName?: string): string | undefined {
   // Remove leading dots and slashes to avoid path traversal or absolute paths
   sanitized = sanitized.replace(/^[/\\.]+/, "")
 
+  // Normalize path segments to prevent traversal like "foo/../bar"
+  if (sanitized) {
+    const segments = sanitized.split("/")
+    const safeSegments: string[] = []
+
+    for (const segment of segments) {
+      if (!segment || segment === ".") {
+        // Skip empty or current-directory segments
+        continue
+      }
+      if (segment === "..") {
+        // Pop a previous segment if possible; otherwise ignore leading ".."
+        if (safeSegments.length > 0) {
+          safeSegments.pop()
+        }
+        continue
+      }
+      safeSegments.push(segment)
+    }
+
+    sanitized = safeSegments.join("/")
+  }
+
+  // Remove any trailing slashes or dots that could lead to ambiguous paths
+  sanitized = sanitized.replace(/[/.]+$/, "")
+
   // If nothing remains, treat as undefined so we fall back to the default base
   if (!sanitized) return undefined
 
