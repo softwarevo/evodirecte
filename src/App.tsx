@@ -48,7 +48,8 @@ const EvoDirecteWord = ({ children }: { children: React.ReactNode }) => {
 export default function App() {
   const [data, setData] = useState<GistData | null>(null)
   const [isPixelated, setIsPixelated] = useState(false)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false)
+  const [isSeedlingDialogOpen, setIsSeedlingDialogOpen] = useState(false)
   const [now, setNow] = useState(new Date())
 
   const searchParams = useMemo(() => new URLSearchParams(window.location.search), [])
@@ -63,7 +64,7 @@ export default function App() {
   useEffect(() => {
     const checkParams = () => {
       if (searchParams.get("cameFrom") === "evoMoyenne") {
-        setIsDialogOpen(true)
+        setIsWelcomeDialogOpen(true)
       }
     }
     // Use a small timeout to avoid the synchronous setState warning
@@ -74,22 +75,7 @@ export default function App() {
   // Fetch
   useEffect(() => {
     fetch("https://gist.githubusercontent.com/adouche-adouche/99008eaffce2671da075d9cc8f8a404e/raw")
-      .then(async res => {
-        const text = await res.text();
-        // The gist has a syntax error (missing comma after startDate), so we try to fix it
-        try {
-          return JSON.parse(text);
-        } catch (firstParseError) {
-          console.error("Erreur lors du premier JSON.parse du gist, tentative de correction du texte :", firstParseError);
-          const fixedText = text.replace(/"startDate":\s*"([^"]+)"\s*("eta"|eta)/, '"startDate": "$1", $2');
-          try {
-            return JSON.parse(fixedText);
-          } catch (secondParseError) {
-            console.error("Erreur lors du second JSON.parse après correction du gist :", secondParseError);
-            throw new Error("Impossible d'analyser le contenu du gist même après tentative de correction.");
-          }
-        }
-      })
+      .then(res => res.json())
       .then((json: GistData) => {
         setData(json)
       })
@@ -145,7 +131,7 @@ export default function App() {
     if (data?.earlyAccess) {
       window.location.href = "https://seedling.evodirecte.qzz.io"
     } else {
-      alert("evoDirecte Seedling (la version bêta) sera disponible au public bientôt !")
+      setIsSeedlingDialogOpen(true)
     }
   }
 
@@ -156,7 +142,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col max-w-4xl mx-auto p-6 font-sans">
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Welcome Dialog */}
+      <Dialog open={isWelcomeDialogOpen} onOpenChange={setIsWelcomeDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold flex items-center gap-2">
@@ -175,8 +162,32 @@ export default function App() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button type="button" size="lg" onClick={() => setIsDialogOpen(false)} className="w-full sm:w-auto">
+            <Button type="button" size="lg" onClick={() => setIsWelcomeDialogOpen(false)} className="w-full sm:w-auto">
               Super
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Seedling Access Dialog */}
+      <Dialog open={isSeedlingDialogOpen} onOpenChange={setIsSeedlingDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold flex items-center gap-2">
+              🌱 Bientôt disponible !
+            </DialogTitle>
+            <DialogDescription className="text-base space-y-4 pt-4">
+              <p>
+                L'accès à <strong>evoDirecte Seedling</strong> (la version bêta) n'est pas encore ouvert au public.
+              </p>
+              <p>
+                Nous travaillons dur pour vous offrir la meilleure expérience possible. Revenez très bientôt pour tester les premières fonctionnalités en avant-première !
+              </p>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button" size="lg" onClick={() => setIsSeedlingDialogOpen(false)} className="w-full sm:w-auto">
+              Compris
             </Button>
           </DialogFooter>
         </DialogContent>
