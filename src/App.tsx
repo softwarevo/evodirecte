@@ -353,4 +353,18 @@ export default function App() {
       </footer>
     </div>
   )
+  return (
+    <>
+      {/* Existing UI content goes here */}
+
+      {/* Accessible live region for loading / progress text */}
+      <div
+        aria-live="polite"
+        role="status"
+        className="sr-only"
+      >
+        {progressText}
+      </div>
+    </>
+  )
 }
