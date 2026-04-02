@@ -18,21 +18,20 @@ jobs:
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           environment: ${{ github.ref_name == 'main' && 'production' || github.ref_name }}
-          description: "Build & Deploy by Cloudflare Pages"
+          description: "Cloudflare Pages Build"
 
-      - name: Wait for Cloudflare & Update Status
-        uses: cloudflare/pages-action@v1
+      - name: Wait for Cloudflare Pages
+        uses: un-versed/wait-for-cloudflare-pages@v1.1.0
+        id: cloudflare
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: "evodirecte"
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          project_name: "evodirecte" 
 
-      - name: Update Deployment Status to Success
+      - name: Update Deployment Status
         uses: chrnorm/deployment-status@v2
-        if: success()
+        if: always()
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
-          state: "success"
-          environment-url: https://${{ github.ref_name == 'main' && '' || format('{0}.', github.ref_name) }}evodirecte.qzz.io
+          state: ${{ steps.cloudflare.outputs.status == 'success' && 'success' || 'failure' }}
+          environment-url: ${{ steps.cloudflare.outputs.url }}
