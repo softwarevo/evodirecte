@@ -81,7 +81,13 @@ export default function App() {
           return JSON.parse(text);
         } catch (firstParseError) {
           console.error("Erreur lors du premier JSON.parse du gist, tentative de correction du texte :", firstParseError);
-          const fixedText = text.replace(/"startDate":\s*"([^"]+)"\s*("eta"|eta)/, '"startDate": "$1", $2');
+          console.error("Erreur lors du premier JSON.parse du gist, tentative de correction du texte :", firstParseError);
+          try {
+            return JSON.parse(fixedText);
+          } catch (secondParseError) {
+            console.error("Erreur lors du second JSON.parse après correction du gist :", secondParseError);
+            throw new Error("Impossible d'analyser le contenu du gist même après tentative de correction.");
+          }
           try {
             return JSON.parse(fixedText);
           } catch (secondParseError) {
