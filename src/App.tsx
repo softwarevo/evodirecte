@@ -129,7 +129,7 @@ export default function App() {
   // Gestion du bouton Early Access
   const handleSeedlingClick = () => {
     if (data?.earlyAccess) {
-      window.location.href = "https://seedling.evodirecte.qzz.io"
+      window.open("https://seedling.evodirecte.qzz.io", "_blank", "noopener,noreferrer")
     } else {
       setIsSeedlingDialogOpen(true)
     }
