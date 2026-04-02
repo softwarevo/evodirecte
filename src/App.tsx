@@ -79,9 +79,15 @@ export default function App() {
         // The gist has a syntax error (missing comma after startDate), so we try to fix it
         try {
           return JSON.parse(text);
-        } catch {
+        } catch (firstParseError) {
+          console.error("Erreur lors du premier JSON.parse du gist, tentative de correction du texte :", firstParseError);
           const fixedText = text.replace(/"startDate":\s*"([^"]+)"\s*("eta"|eta)/, '"startDate": "$1", $2');
-          return JSON.parse(fixedText);
+          try {
+            return JSON.parse(fixedText);
+          } catch (secondParseError) {
+            console.error("Erreur lors du second JSON.parse après correction du gist :", secondParseError);
+            throw new Error("Impossible d'analyser le contenu du gist même après tentative de correction.");
+          }
         }
       })
       .then((json: GistData) => {
