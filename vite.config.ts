@@ -3,68 +3,15 @@ import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
-function sanitizeBranchName(rawBranchName?: string): string | undefined {
-  if (!rawBranchName) return undefined
-
-  // Trim whitespace
-  let sanitized = rawBranchName.trim()
-
-  // Replace any character that is not URL-safe (a-z, A-Z, 0-9, -, _, .) with '-'
-  sanitized = sanitized.replace(/[^a-zA-Z0-9\-_.]+/g, "-")
-
-  // Collapse multiple '-' into a single '-'
-  sanitized = sanitized.replace(/-+/g, "-")
-
-  // Remove leading dots and slashes to avoid path traversal or absolute paths
-  sanitized = sanitized.replace(/^[/.]+/, "")
-
-  // Normalize path segments to prevent traversal like "foo/../bar"
-  if (sanitized) {
-    const segments = sanitized.split("/")
-    const safeSegments: string[] = []
-
-    for (const segment of segments) {
-      if (!segment || segment === ".") {
-        // Skip empty or current-directory segments
-        continue
-      }
-      if (segment === "..") {
-        // Pop a previous segment if possible; otherwise ignore leading ".."
-        if (safeSegments.length > 0) {
-          safeSegments.pop()
-        }
-        continue
-      }
-      safeSegments.push(segment)
-    }
-
-    sanitized = safeSegments.join("/")
-  }
-
-  // Remove any trailing slashes or dots that could lead to ambiguous paths
-  sanitized = sanitized.replace(/[/.]+$/, "")
-
-  // If nothing remains, treat as undefined so we fall back to the default base
-  if (!sanitized) return undefined
-
-  return sanitized
-}
-
-export default defineConfig(() => {
-  const rawBranchName = process.env.GITHUB_REF_NAME || process.env.VITE_BRANCH_NAME
-  const branchName = sanitizeBranchName(rawBranchName)
-
-  const base = branchName && branchName !== "main"
-    ? `/${branchName}/`
-    : "/"
-
-  return {
-    plugins: [react(), tailwindcss()],
-    base,
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "./src"),
-      },
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+  base: "/", 
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     },
-  }
+  },
 })
