@@ -16,7 +16,7 @@ function sanitizeBranchName(rawBranchName?: string): string | undefined {
   sanitized = sanitized.replace(/-+/g, "-")
 
   // Remove leading dots and slashes to avoid path traversal or absolute paths
-  sanitized = sanitized.replace(/^[/\\.]+/, "")
+  sanitized = sanitized.replace(/^[/.]+/, "")
 
   // Normalize path segments to prevent traversal like "foo/../bar"
   if (sanitized) {
