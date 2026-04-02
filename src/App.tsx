@@ -75,7 +75,12 @@ export default function App() {
   // Fetch
   useEffect(() => {
     fetch("https://gist.githubusercontent.com/adouche-adouche/99008eaffce2671da075d9cc8f8a404e/raw")
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status} ${res.statusText}`);
+        }
+        return res.json();
+      })
       .then((json: GistData) => {
         setData(json)
       })
@@ -129,7 +134,7 @@ export default function App() {
   // Gestion du bouton Early Access
   const handleSeedlingClick = () => {
     if (data?.earlyAccess) {
-      window.location.href = "https://seedling.evodirecte.qzz.io"
+      window.open("https://seedling.evodirecte.qzz.io", "_blank", "noopener,noreferrer")
     } else {
       setIsSeedlingDialogOpen(true)
     }
@@ -352,5 +357,19 @@ export default function App() {
         Fait avec 🍪 et 🧋 par <a href="https://github.com/softwarevo" className="underline hover:text-primary">evoSoftware</a>
       </footer>
     </div>
+  )
+  return (
+    <>
+      {/* Existing UI content goes here */}
+
+      {/* Accessible live region for loading / progress text */}
+      <div
+        aria-live="polite"
+        role="status"
+        className="sr-only"
+      >
+        {progressText}
+      </div>
+    </>
   )
 }
