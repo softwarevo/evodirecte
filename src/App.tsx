@@ -178,13 +178,19 @@ export default function App() {
 
       {/* HEADER */}
       <header className="flex justify-between items-center py-6">
-        <img 
-          src="/logo.svg" 
-          alt="evoDirecte Logo" 
+        <button
+          type="button"
           onDoubleClick={handleLogoDoubleClick}
-          className={`h-12 w-12 cursor-pointer transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
-          style={{ imageRendering: isPixelated ? 'pixelated' : 'auto' }}
-        />
+          aria-label="Activer l’easter egg du logo evoDirecte"
+          className="bg-transparent border-none p-0 cursor-pointer"
+        >
+          <img 
+            src="/logo.svg" 
+            alt="evoDirecte Logo" 
+            className={`h-12 w-12 transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
+            style={{ imageRendering: isPixelated ? 'pixelated' : 'auto' }}
+          />
+        </button>
 
         <div className="flex-1 flex justify-center">
           {remainingTime && (
