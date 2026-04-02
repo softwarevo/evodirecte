@@ -313,7 +313,7 @@ export default function App() {
             <Button size="lg" onClick={handleSeedlingClick}>
               Ouvrir evoDirecte Seedling
             </Button>
-            <p className="text-s text-muted-foreground/60">
+            <p className="text-sm text-muted-foreground/60">
               Teste evoDirecte en avant-première et obtiens un badge spécial dans l’app finale
             </p>
           </div>
