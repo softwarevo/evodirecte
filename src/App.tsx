@@ -226,7 +226,7 @@ export default function App() {
         <a
           href="https://github.evodirecte.qzz.io"
           target="_blank"
-          rel="noreferrer noopener"
+          rel="noopener,noreferrer"
           aria-label="Ouvrir le dépôt GitHub dans un nouvel onglet"
         >
           <SiGithub className="h-10 w-10" />
