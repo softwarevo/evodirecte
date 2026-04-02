@@ -80,7 +80,6 @@ export default function App() {
         try {
           return JSON.parse(text);
         } catch {
-          // The gist has a syntax error (missing comma after startDate), so we try to fix it
           const fixedText = text.replace(/"startDate":\s*"([^"]+)"\s*("eta"|eta)/, '"startDate": "$1", $2');
           return JSON.parse(fixedText);
         }
