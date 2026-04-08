@@ -375,8 +375,15 @@ export default function App() {
             variant="outline"
             size="icon"
             title="Discord"
+            asChild
           >
-            <SiDiscord style={{ color: '#5865F2' }} />
+            <a
+              href="https://discord.gg/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SiDiscord style={{ color: '#5865F2' }} />
+            </a>
           </Button>
           <Button
             variant="outline"
