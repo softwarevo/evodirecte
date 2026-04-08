@@ -10,8 +10,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Check, X, Minus, Clock } from "lucide-react"
-import { SiGithub } from '@icons-pack/react-simple-icons';
+import { Check, X, Minus, Clock, Mail } from "lucide-react"
+import { SiGithub, SiDiscord, SiWhatsapp } from '@icons-pack/react-simple-icons';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
 import { format, parse, differenceInDays, differenceInHours, isAfter, isBefore } from 'date-fns';
@@ -363,9 +363,50 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <footer className="py-6 text-center text-sm text-muted-foreground border-t mt-auto">
-        Fait avec 🍪 et 🧋 par <a href="https://github.com/softwarevo" className="underline hover:text-primary">evoSoftware</a>
-      </footer>
+      <motion.footer
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={sectionVariants}
+        className="py-12 flex flex-col items-center gap-4 border-t mt-auto"
+      >
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            title="Discord"
+          >
+            <SiDiscord style={{ color: '#5865F2' }} />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            title="WhatsApp"
+            asChild
+          >
+            <a
+              href="https://whatsapp.com/channel/0029VbBrcnK8vd1QRpHDvk0H"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SiWhatsapp style={{ color: '#25D366' }} />
+            </a>
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            title="Mail"
+            asChild
+          >
+            <a href="mailto:evo@directe.qzz.io">
+              <Mail className="text-black dark:text-white" />
+            </a>
+          </Button>
+        </div>
+        <div className="text-sm text-muted-foreground">
+          Fait avec 🍪 et 🧋 par <a href="https://github.com/softwarevo" className="underline hover:text-primary">evoSoftware</a>
+        </div>
+      </motion.footer>
 
       {/* Accessible live region for loading / progress text */}
       <div
