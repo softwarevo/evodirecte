@@ -86,9 +86,22 @@ export default function App() {
         setData(json)
         setError(null)
       })
-      .catch(err => {
+      .catch((err: unknown) => {
         console.error("Fetch error:", err)
-        setError("Impossible de charger les données. Veuillez réessayer plus tard.")
+
+        let userMessage = "Impossible de charger les données. Veuillez réessayer plus tard."
+
+        if (err instanceof Error) {
+          if (err.message.startsWith("HTTP error! status:")) {
+            userMessage = "Le serveur a renvoyé une erreur lors du chargement des données."
+          } else if (err instanceof SyntaxError) {
+            userMessage = "Les données reçues sont invalides ou mal formatées."
+          } else if (err instanceof TypeError) {
+            userMessage = "Erreur réseau : vérifiez votre connexion internet puis réessayez."
+          }
+        }
+
+        setError(userMessage)
         setData(null)
       })
   }, [])
@@ -238,6 +251,7 @@ export default function App() {
           target="_blank"
           rel="noopener,noreferrer"
           aria-label="Ouvrir le dépôt GitHub dans un nouvel onglet"
+          className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         >
           <SiGithub className="h-10 w-10" />
         </a>
@@ -375,8 +389,15 @@ export default function App() {
             variant="outline"
             size="icon"
             title="Discord"
+            asChild
           >
-            <SiDiscord style={{ color: '#5865F2' }} />
+            <a
+              href="https://discord.gg/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SiDiscord style={{ color: '#5865F2' }} />
+            </a>
           </Button>
           <Button
             variant="outline"
