@@ -238,6 +238,7 @@ export default function App() {
           target="_blank"
           rel="noopener,noreferrer"
           aria-label="Ouvrir le dépôt GitHub dans un nouvel onglet"
+          className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         >
           <SiGithub className="h-10 w-10" />
         </a>
