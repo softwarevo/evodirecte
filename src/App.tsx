@@ -75,7 +75,7 @@ export default function App() {
 
   // Fetch
   useEffect(() => {
-    fetch("https://gist.githubusercontent.com/adouche-adouche/99008eaffce2671da075d9cc8f8a404e/raw")
+    fetch("https://gist.githubusercontent.com/adouche-js/99008eaffce2671da075d9cc8f8a404e/raw")
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status} ${res.statusText}`);
