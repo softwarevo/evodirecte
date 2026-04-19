@@ -78,7 +78,9 @@ export default function App() {
 
   // Fetch
   useEffect(() => {
-    fetch(EVODIRECTE_DYNPROG_URL)
+    const controller = new AbortController()
+
+    fetch(EVODIRECTE_DYNPROG_URL, { signal: controller.signal })
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status} ${res.statusText}`);
@@ -90,6 +92,10 @@ export default function App() {
         setError(null)
       })
       .catch((err: unknown) => {
+        if (err instanceof DOMException && err.name === "AbortError") {
+          return
+        }
+
         console.error("Fetch error:", err)
 
         let userMessage = "Impossible de charger les données. Veuillez réessayer plus tard."
@@ -105,6 +111,8 @@ export default function App() {
         setError(userMessage)
         setData(null)
       })
+
+    return () => controller.abort()
   }, [])
 
   const { progress, progressText, etaDate, remainingTime } = useMemo(() => {
