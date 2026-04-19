@@ -78,7 +78,9 @@ export default function App() {
 
   // Fetch
   useEffect(() => {
-    fetch(EVODIRECTE_DYNPROG_URL)
+    const controller = new AbortController()
+
+    fetch(EVODIRECTE_DYNPROG_URL, { signal: controller.signal })
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status} ${res.statusText}`);
@@ -90,6 +92,10 @@ export default function App() {
         setError(null)
       })
       .catch((err: unknown) => {
+        if (err instanceof DOMException && err.name === "AbortError") {
+          return
+        }
+
         console.error("Fetch error:", err)
 
         let userMessage = "Impossible de charger les données. Veuillez réessayer plus tard."
@@ -105,6 +111,8 @@ export default function App() {
         setError(userMessage)
         setData(null)
       })
+
+    return () => controller.abort()
   }, [])
 
   const { progress, progressText, etaDate, remainingTime } = useMemo(() => {
@@ -158,7 +166,11 @@ export default function App() {
   // Gestion du bouton Early Access
   const handleSeedlingClick = () => {
     if (data?.earlyAccess) {
-      window.open("https://seedling.evodirecte.qzz.io", "_blank", "noopener,noreferrer")
+      const link = document.createElement("a");
+      link.href = "https://seedling.evodirecte.qzz.io";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.click();
     } else {
       setIsSeedlingDialogOpen(true)
     }
@@ -234,7 +246,6 @@ export default function App() {
             src="/logo.svg" 
             alt="evoDirecte Logo" 
             className={`h-12 w-12 transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
-            style={{ imageRendering: isPixelated ? 'pixelated' : 'auto' }}
           />
         </button>
 
