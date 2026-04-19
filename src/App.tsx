@@ -58,9 +58,9 @@ export default function App() {
 
   const searchParams = useMemo(() => new URLSearchParams(window.location.search), [])
 
-  // Update clock every minute
+  // Update clock every 10 seconds for more accurate countdown/status updates
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 60000)
+    const timer = setInterval(() => setNow(new Date()), 10000)
     return () => clearInterval(timer)
   }, [])
 
