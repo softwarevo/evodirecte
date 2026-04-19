@@ -58,22 +58,17 @@ export default function App() {
 
   const searchParams = useMemo(() => new URLSearchParams(window.location.search), [])
 
-  // Update clock every minute
+  // Update clock every 10 seconds for more accurate countdown/status updates
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 60000)
+    const timer = setInterval(() => setNow(new Date()), 10000)
     return () => clearInterval(timer)
   }, [])
 
   // Check for cameFrom=evoMoyenne
   useEffect(() => {
-    const checkParams = () => {
-      if (searchParams.get("cameFrom") === "evoMoyenne") {
-        setIsWelcomeDialogOpen(true)
-      }
+    if (searchParams.get("cameFrom") === "evoMoyenne") {
+      setIsWelcomeDialogOpen(true)
     }
-    // Use a small timeout to avoid the synchronous setState warning
-    const timeout = setTimeout(checkParams, 0)
-    return () => clearTimeout(timeout)
   }, [searchParams])
 
   // Fetch
@@ -138,14 +133,19 @@ export default function App() {
     const current = now.getTime() - start.getTime();
     const calculatedProgress = Math.min(Math.max((current / total) * 100, 0), 100);
 
-    const days = differenceInDays(eta, now);
-    const hours = differenceInHours(eta, now) % 24;
+    let remainingTime: { days: number; hours: number } | null = null;
+    if (isAfter(eta, now)) {
+      const totalHours = differenceInHours(eta, now);
+      const days = differenceInDays(eta, now);
+      const hours = totalHours % 24;
+      remainingTime = { days, hours };
+    }
 
     return {
       progress: calculatedProgress,
       progressText: `${calculatedProgress.toFixed(1)}%`,
       etaDate: eta,
-      remainingTime: isAfter(eta, now) ? { days, hours } : null
+      remainingTime
     };
   }, [data, now, error]);
 
@@ -166,11 +166,7 @@ export default function App() {
   // Gestion du bouton Early Access
   const handleSeedlingClick = () => {
     if (data?.earlyAccess) {
-      const link = document.createElement("a");
-      link.href = "https://seedling.evodirecte.qzz.io";
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.click();
+      window.open("https://seedling.evodirecte.qzz.io", "_blank", "noopener,noreferrer");
     } else {
       setIsSeedlingDialogOpen(true)
     }
