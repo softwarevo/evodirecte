@@ -234,7 +234,6 @@ export default function App() {
             src="/logo.svg" 
             alt="evoDirecte Logo" 
             className={`h-12 w-12 transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
-            style={{ imageRendering: isPixelated ? 'pixelated' : 'auto' }}
           />
         </button>
 
