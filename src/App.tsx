@@ -91,14 +91,12 @@ export default function App() {
 
         let userMessage = "Impossible de charger les données. Veuillez réessayer plus tard."
 
-        if (err instanceof Error) {
-          if (err.message.startsWith("HTTP error! status:")) {
-            userMessage = "Le serveur a renvoyé une erreur lors du chargement des données."
-          } else if (err instanceof SyntaxError) {
-            userMessage = "Les données reçues sont invalides ou mal formatées."
-          } else if (err instanceof TypeError) {
-            userMessage = "Erreur réseau : vérifiez votre connexion internet puis réessayez."
-          }
+        if (err instanceof SyntaxError) {
+          userMessage = "Les données reçues sont invalides ou mal formatées."
+        } else if (err instanceof TypeError) {
+          userMessage = "Erreur réseau : vérifiez votre connexion internet puis réessayez."
+        } else if (err instanceof Error && err.message.startsWith("HTTP error! status:")) {
+          userMessage = "Le serveur a renvoyé une erreur lors du chargement des données."
         }
 
         setError(userMessage)
