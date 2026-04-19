@@ -25,6 +25,9 @@ interface GistData {
   earlyAccess: boolean;
 }
 
+const EVODIRECTE_DYNPROG_URL =
+  "https://gist.githubusercontent.com/adouche-js/99008eaffce2671da075d9cc8f8a404e/raw/evodirecte_dynprog.json";
+
 const EvoDirecteWord = ({ children }: { children: React.ReactNode }) => {
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -75,7 +78,7 @@ export default function App() {
 
   // Fetch
   useEffect(() => {
-    fetch("https://gist.githubusercontent.com/adouche-js/99008eaffce2671da075d9cc8f8a404e/raw/cf625f805dff53e03926edb57683c1160a7d630d/evodirecte_dynprog.json")
+    fetch(EVODIRECTE_DYNPROG_URL)
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status} ${res.statusText}`);
