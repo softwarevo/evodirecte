@@ -138,14 +138,19 @@ export default function App() {
     const current = now.getTime() - start.getTime();
     const calculatedProgress = Math.min(Math.max((current / total) * 100, 0), 100);
 
-    const days = differenceInDays(eta, now);
-    const hours = differenceInHours(eta, now) % 24;
+    let remainingTime: { days: number; hours: number } | null = null;
+    if (isAfter(eta, now)) {
+      const totalHours = differenceInHours(eta, now);
+      const days = differenceInDays(eta, now);
+      const hours = totalHours % 24;
+      remainingTime = { days, hours };
+    }
 
     return {
       progress: calculatedProgress,
       progressText: `${calculatedProgress.toFixed(1)}%`,
       etaDate: eta,
-      remainingTime: isAfter(eta, now) ? { days, hours } : null
+      remainingTime
     };
   }, [data, now, error]);
 
