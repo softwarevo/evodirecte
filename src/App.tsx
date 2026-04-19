@@ -158,7 +158,11 @@ export default function App() {
   // Gestion du bouton Early Access
   const handleSeedlingClick = () => {
     if (data?.earlyAccess) {
-      window.open("https://seedling.evodirecte.qzz.io", "_blank", "noopener,noreferrer")
+      const link = document.createElement("a");
+      link.href = "https://seedling.evodirecte.qzz.io";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.click();
     } else {
       setIsSeedlingDialogOpen(true)
     }
