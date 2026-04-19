@@ -25,6 +25,9 @@ interface GistData {
   earlyAccess: boolean;
 }
 
+const EVODIRECTE_DYNPROG_URL =
+  "https://gist.githubusercontent.com/adouche-js/99008eaffce2671da075d9cc8f8a404e/raw/evodirecte_dynprog.json";
+
 const EvoDirecteWord = ({ children }: { children: React.ReactNode }) => {
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -75,7 +78,7 @@ export default function App() {
 
   // Fetch
   useEffect(() => {
-    fetch("https://gist.githubusercontent.com/adouche-js/99008eaffce2671da075d9cc8f8a404e/raw/cf625f805dff53e03926edb57683c1160a7d630d/evodirecte_dynprog.json")
+    fetch(EVODIRECTE_DYNPROG_URL)
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status} ${res.statusText}`);
@@ -91,14 +94,12 @@ export default function App() {
 
         let userMessage = "Impossible de charger les données. Veuillez réessayer plus tard."
 
-        if (err instanceof Error) {
-          if (err.message.startsWith("HTTP error! status:")) {
-            userMessage = "Le serveur a renvoyé une erreur lors du chargement des données."
-          } else if (err instanceof SyntaxError) {
-            userMessage = "Les données reçues sont invalides ou mal formatées."
-          } else if (err instanceof TypeError) {
-            userMessage = "Erreur réseau : vérifiez votre connexion internet puis réessayez."
-          }
+        if (err instanceof SyntaxError) {
+          userMessage = "Les données reçues sont invalides ou mal formatées."
+        } else if (err instanceof TypeError) {
+          userMessage = "Erreur réseau : vérifiez votre connexion internet puis réessayez."
+        } else if (err instanceof Error && err.message.startsWith("HTTP error! status:")) {
+          userMessage = "Le serveur a renvoyé une erreur lors du chargement des données."
         }
 
         setError(userMessage)
@@ -249,7 +250,7 @@ export default function App() {
         <a
           href="https://github.evodirecte.qzz.io"
           target="_blank"
-          rel="noopener,noreferrer"
+          rel="noopener noreferrer"
           aria-label="Ouvrir le dépôt GitHub dans un nouvel onglet"
           className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         >
@@ -392,7 +393,7 @@ export default function App() {
             asChild
           >
             <a
-              href="https://discord.gg/"
+              href="https://discord.gg/softwarevo"
               target="_blank"
               rel="noopener noreferrer"
             >
