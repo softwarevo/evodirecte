@@ -66,14 +66,9 @@ export default function App() {
 
   // Check for cameFrom=evoMoyenne
   useEffect(() => {
-    const checkParams = () => {
-      if (searchParams.get("cameFrom") === "evoMoyenne") {
-        setIsWelcomeDialogOpen(true)
-      }
+    if (searchParams.get("cameFrom") === "evoMoyenne") {
+      setIsWelcomeDialogOpen(true)
     }
-    // Use a small timeout to avoid the synchronous setState warning
-    const timeout = setTimeout(checkParams, 0)
-    return () => clearTimeout(timeout)
   }, [searchParams])
 
   // Fetch
