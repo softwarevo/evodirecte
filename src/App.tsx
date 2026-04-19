@@ -392,7 +392,7 @@ export default function App() {
             asChild
           >
             <a
-              href="https://discord.gg/"
+              href="https://discord.gg/softwarevo"
               target="_blank"
               rel="noopener noreferrer"
             >
