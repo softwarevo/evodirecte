@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback, memo } from "react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import {
@@ -13,7 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Check, X, Minus, Clock, Mail } from "lucide-react"
 import { SiGithub, SiDiscord, SiWhatsapp } from '@icons-pack/react-simple-icons';
 import confetti from 'canvas-confetti';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { format, parse, differenceInDays, differenceInHours, isAfter, isBefore } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -28,7 +28,7 @@ interface GistData {
 const EVODIRECTE_DYNPROG_URL =
   "https://gist.githubusercontent.com/adouche-js/99008eaffce2671da075d9cc8f8a404e/raw/evodirecte_dynprog.json";
 
-const EvoDirecteWord = ({ children }: { children: React.ReactNode }) => {
+const EvoDirecteWord = memo(({ children }: { children: React.ReactNode }) => {
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     confetti({
@@ -46,30 +46,149 @@ const EvoDirecteWord = ({ children }: { children: React.ReactNode }) => {
       {children}
     </span>
   );
+});
+
+EvoDirecteWord.displayName = "EvoDirecteWord";
+
+const ComparisonTable = memo(({ variants }: { variants: Variants }) => {
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={variants}
+      className="space-y-4"
+    >
+      <h3 className="text-2xl font-semibold text-center"><EvoDirecteWord>evoDirecte</EvoDirecteWord> 🗿 vs EcoleDirecte 💩</h3>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Fonctionnalité</TableHead>
+            <TableHead className="text-center">EcoleDirecte</TableHead>
+            <TableHead className="text-center text-primary"><EvoDirecteWord>evoDirecte</EvoDirecteWord></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>Mode Sombre Natif</TableCell>
+            <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
+            <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Signalement des devoirs non entrés</TableCell>
+            <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
+            <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Interface Fluide & Rapide</TableCell>
+            <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
+            <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Organisation des devoirs par priorité</TableCell>
+            <TableCell className="text-center"><Minus className="mx-auto text-yellow-500 h-5 w-5" /></TableCell>
+            <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Moyennes et partage de notes</TableCell>
+            <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
+            <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Système d'amis</TableCell>
+            <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
+            <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Leçons type Duolingo et évals blanches fictives</TableCell>
+            <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
+            <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </motion.div>
+  );
+});
+
+ComparisonTable.displayName = "ComparisonTable";
+
+const Footer = memo(({ variants }: { variants: Variants }) => {
+  return (
+    <motion.footer
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={variants}
+      className="py-12 flex flex-col items-center gap-4 border-t mt-auto"
+    >
+      <div className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          size="icon"
+          title="Discord"
+          asChild
+        >
+          <a
+            href="https://discord.gg/softwarevo"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <SiDiscord style={{ color: '#5865F2' }} />
+          </a>
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          title="WhatsApp"
+          asChild
+        >
+          <a
+            href="https://whatsapp.com/channel/0029VbBrcnK8vd1QRpHDvk0H"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <SiWhatsapp style={{ color: '#25D366' }} />
+          </a>
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          title="Mail"
+          asChild
+        >
+          <a href="mailto:evo@directe.qzz.io">
+            <Mail className="text-black dark:text-white" />
+          </a>
+        </Button>
+      </div>
+      <div className="text-sm text-muted-foreground">
+        Fait avec 🍪 et 🧋 par <a href="https://github.com/softwarevo" className="underline hover:text-primary">evoSoftware</a>
+      </div>
+    </motion.footer>
+  );
+});
+
+Footer.displayName = "Footer";
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
 };
 
 export default function App() {
   const [data, setData] = useState<GistData | null>(null)
   const [isPixelated, setIsPixelated] = useState(false)
-  const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false)
+  const searchParams = useMemo(() => new URLSearchParams(window.location.search), [])
+  const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(() => searchParams.get("cameFrom") === "evoMoyenne")
   const [isSeedlingDialogOpen, setIsSeedlingDialogOpen] = useState(false)
   const [now, setNow] = useState(new Date())
   const [error, setError] = useState<string | null>(null)
-
-  const searchParams = useMemo(() => new URLSearchParams(window.location.search), [])
 
   // Update clock every 10 seconds for more accurate countdown/status updates
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 10000)
     return () => clearInterval(timer)
   }, [])
-
-  // Check for cameFrom=evoMoyenne
-  useEffect(() => {
-    if (searchParams.get("cameFrom") === "evoMoyenne") {
-      setIsWelcomeDialogOpen(true)
-    }
-  }, [searchParams])
 
   // Fetch
   useEffect(() => {
@@ -158,24 +277,19 @@ export default function App() {
   }, [etaDate]);
 
   // Gestion du double clic sur le logo
-  const handleLogoDoubleClick = () => {
+  const handleLogoDoubleClick = useCallback(() => {
     setIsPixelated(true)
     setTimeout(() => setIsPixelated(false), 3000)
-  }
+  }, [])
 
   // Gestion du bouton Early Access
-  const handleSeedlingClick = () => {
+  const handleSeedlingClick = useCallback(() => {
     if (data?.earlyAccess) {
       window.open("https://seedling.evodirecte.qzz.io", "_blank", "noopener,noreferrer");
     } else {
       setIsSeedlingDialogOpen(true)
     }
-  }
-
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
+  }, [data?.earlyAccess])
 
   return (
     <div className="min-h-screen flex flex-col max-w-4xl mx-auto p-6 font-sans">
@@ -308,61 +422,7 @@ export default function App() {
         )}
 
         {/* COMPARAISON */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={sectionVariants}
-          className="space-y-4"
-        >
-          <h3 className="text-2xl font-semibold text-center"><EvoDirecteWord>evoDirecte</EvoDirecteWord> 🗿 vs EcoleDirecte 💩</h3>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Fonctionnalité</TableHead>
-                <TableHead className="text-center">EcoleDirecte</TableHead>
-                <TableHead className="text-center text-primary"><EvoDirecteWord>evoDirecte</EvoDirecteWord></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>Mode Sombre Natif</TableCell>
-                <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
-                <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Signalement des devoirs non entrés</TableCell>
-                <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
-                <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Interface Fluide & Rapide</TableCell>
-                <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
-                <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Organisation des devoirs par priorité</TableCell>
-                <TableCell className="text-center"><Minus className="mx-auto text-yellow-500 h-5 w-5" /></TableCell>
-                <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Moyennes et partage de notes</TableCell>
-                <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
-                <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Système d'amis</TableCell>
-                <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
-                <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Leçons type Duolingo et évals blanches fictives</TableCell>
-                <TableCell className="text-center"><X className="mx-auto text-destructive h-5 w-5" /></TableCell>
-                <TableCell className="text-center"><Check className="mx-auto text-green-500 h-5 w-5" /></TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </motion.div>
+        <ComparisonTable variants={sectionVariants} />
 
         {/* CTA */}
         <motion.div
@@ -385,57 +445,7 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <motion.footer
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={sectionVariants}
-        className="py-12 flex flex-col items-center gap-4 border-t mt-auto"
-      >
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            title="Discord"
-            asChild
-          >
-            <a
-              href="https://discord.gg/softwarevo"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <SiDiscord style={{ color: '#5865F2' }} />
-            </a>
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            title="WhatsApp"
-            asChild
-          >
-            <a
-              href="https://whatsapp.com/channel/0029VbBrcnK8vd1QRpHDvk0H"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <SiWhatsapp style={{ color: '#25D366' }} />
-            </a>
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            title="Mail"
-            asChild
-          >
-            <a href="mailto:evo@directe.qzz.io">
-              <Mail className="text-black dark:text-white" />
-            </a>
-          </Button>
-        </div>
-        <div className="text-sm text-muted-foreground">
-          Fait avec 🍪 et 🧋 par <a href="https://github.com/softwarevo" className="underline hover:text-primary">evoSoftware</a>
-        </div>
-      </motion.footer>
+      <Footer variants={sectionVariants} />
 
       {/* Accessible live region for loading / progress text */}
       <div
