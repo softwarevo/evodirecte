@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback, memo } from "react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import {
@@ -20,7 +20,7 @@ import {
 import { Check, X, Minus, Clock, Mail } from "lucide-react"
 import { SiGithub, SiDiscord, SiWhatsapp } from "@icons-pack/react-simple-icons"
 import confetti from "canvas-confetti"
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import {
   format,
   parse,
@@ -42,7 +42,7 @@ interface GistData {
 const EVODIRECTE_DYNPROG_URL =
   "https://gist.githubusercontent.com/adouche-js/99008eaffce2671da075d9cc8f8a404e/raw/evodirecte_dynprog.json"
 
-const EvoDirecteWord = ({ children }: { children: React.ReactNode }) => {
+const EvoDirecteWord = memo(({ children }: { children: React.ReactNode }) => {
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     confetti({
@@ -60,33 +60,240 @@ const EvoDirecteWord = ({ children }: { children: React.ReactNode }) => {
       {children}
     </span>
   )
+})
+
+EvoDirecteWord.displayName = "EvoDirecteWord"
+
+const ComparisonTable = memo(({ variants }: { variants: Variants }) => {
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={variants}
+      className="space-y-4"
+    >
+      <h3 className="text-center text-2xl font-semibold">
+        <EvoDirecteWord>evoDirecte</EvoDirecteWord> 🗿 vs EcoleDirecte 💩
+      </h3>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Fonctionnalité</TableHead>
+            <TableHead className="text-center">EcoleDirecte</TableHead>
+            <TableHead className="text-center text-primary">
+              <EvoDirecteWord>evoDirecte</EvoDirecteWord>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>Mode Sombre Natif</TableCell>
+            <TableCell className="text-center">
+              <X
+                className="mx-auto h-5 w-5 text-destructive"
+                role="img"
+                aria-label="Non"
+              />
+            </TableCell>
+            <TableCell className="text-center">
+              <Check
+                className="mx-auto h-5 w-5 text-green-500"
+                role="img"
+                aria-label="Oui"
+              />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Signalement des devoirs non entrés</TableCell>
+            <TableCell className="text-center">
+              <X
+                className="mx-auto h-5 w-5 text-destructive"
+                role="img"
+                aria-label="Non"
+              />
+            </TableCell>
+            <TableCell className="text-center">
+              <Check
+                className="mx-auto h-5 w-5 text-green-500"
+                role="img"
+                aria-label="Oui"
+              />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Interface Fluide & Rapide</TableCell>
+            <TableCell className="text-center">
+              <X
+                className="mx-auto h-5 w-5 text-destructive"
+                role="img"
+                aria-label="Non"
+              />
+            </TableCell>
+            <TableCell className="text-center">
+              <Check
+                className="mx-auto h-5 w-5 text-green-500"
+                role="img"
+                aria-label="Oui"
+              />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Organisation des devoirs par priorité</TableCell>
+            <TableCell className="text-center">
+              <Minus
+                className="mx-auto h-5 w-5 text-yellow-500"
+                role="img"
+                aria-label="Partiellement"
+              />
+            </TableCell>
+            <TableCell className="text-center">
+              <Check
+                className="mx-auto h-5 w-5 text-green-500"
+                role="img"
+                aria-label="Oui"
+              />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Moyennes et partage de notes</TableCell>
+            <TableCell className="text-center">
+              <X
+                className="mx-auto h-5 w-5 text-destructive"
+                role="img"
+                aria-label="Non"
+              />
+            </TableCell>
+            <TableCell className="text-center">
+              <Check
+                className="mx-auto h-5 w-5 text-green-500"
+                role="img"
+                aria-label="Oui"
+              />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Système d'amis</TableCell>
+            <TableCell className="text-center">
+              <X
+                className="mx-auto h-5 w-5 text-destructive"
+                role="img"
+                aria-label="Non"
+              />
+            </TableCell>
+            <TableCell className="text-center">
+              <Check
+                className="mx-auto h-5 w-5 text-green-500"
+                role="img"
+                aria-label="Oui"
+              />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              Leçons type Duolingo et évals blanches fictives
+            </TableCell>
+            <TableCell className="text-center">
+              <X
+                className="mx-auto h-5 w-5 text-destructive"
+                role="img"
+                aria-label="Non"
+              />
+            </TableCell>
+            <TableCell className="text-center">
+              <Check
+                className="mx-auto h-5 w-5 text-green-500"
+                role="img"
+                aria-label="Oui"
+              />
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </motion.div>
+  )
+})
+
+ComparisonTable.displayName = "ComparisonTable"
+
+const Footer = memo(({ variants }: { variants: Variants }) => {
+  return (
+    <motion.footer
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={variants}
+      className="mt-auto flex flex-col items-center gap-4 border-t py-12"
+    >
+      <div className="flex items-center gap-2">
+        <Button variant="outline" size="icon" title="Discord" asChild>
+          <a
+            href="https://discord.gg/softwarevo"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Rejoindre notre serveur Discord"
+          >
+            <SiDiscord style={{ color: "#5865F2" }} />
+          </a>
+        </Button>
+        <Button variant="outline" size="icon" title="WhatsApp" asChild>
+          <a
+            href="https://whatsapp.com/channel/0029VbBrcnK8vd1QRpHDvk0H"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Suivre notre chaîne WhatsApp"
+          >
+            <SiWhatsapp style={{ color: "#25D366" }} />
+          </a>
+        </Button>
+        <Button variant="outline" size="icon" title="Mail" asChild>
+          <a
+            href="mailto:evo@directe.qzz.io"
+            aria-label="Nous contacter par e-mail"
+          >
+            <Mail className="text-black dark:text-white" />
+          </a>
+        </Button>
+      </div>
+      <div className="text-sm text-muted-foreground">
+        Fait avec 🍪 et 🧋 par{" "}
+        <a
+          href="https://github.com/softwarevo"
+          className="underline hover:text-primary"
+        >
+          evoSoftware
+        </a>
+      </div>
+    </motion.footer>
+  )
+})
+
+Footer.displayName = "Footer"
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 }
 
 export default function App() {
   const [data, setData] = useState<GistData | null>(null)
   const [isPixelated, setIsPixelated] = useState(false)
-  const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false)
-  const [isSeedlingDialogOpen, setIsSeedlingDialogOpen] = useState(false)
-  const [now, setNow] = useState(new Date())
-  const [error, setError] = useState<string | null>(null)
-
   const searchParams = useMemo(
     () => new URLSearchParams(window.location.search),
     []
   )
+  const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(
+    () => searchParams.get("cameFrom") === "evoMoyenne"
+  )
+  const [isSeedlingDialogOpen, setIsSeedlingDialogOpen] = useState(false)
+  const [now, setNow] = useState(new Date())
+  const [error, setError] = useState<string | null>(null)
 
   // Update clock every 10 seconds for more accurate countdown/status updates
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 10000)
     return () => clearInterval(timer)
   }, [])
-
-  // Check for cameFrom=evoMoyenne
-  useEffect(() => {
-    if (searchParams.get("cameFrom") === "evoMoyenne") {
-      setIsWelcomeDialogOpen(true)
-    }
-  }, [searchParams])
 
   // Fetch
   useEffect(() => {
@@ -195,13 +402,13 @@ export default function App() {
   }, [etaDate])
 
   // Gestion du double clic sur le logo
-  const handleLogoDoubleClick = () => {
+  const handleLogoDoubleClick = useCallback(() => {
     setIsPixelated(true)
     setTimeout(() => setIsPixelated(false), 3000)
-  }
+  }, [])
 
   // Gestion du bouton Early Access
-  const handleSeedlingClick = () => {
+  const handleSeedlingClick = useCallback(() => {
     if (data?.earlyAccess) {
       window.open(
         "https://seedling.evodirecte.qzz.io",
@@ -211,12 +418,7 @@ export default function App() {
     } else {
       setIsSeedlingDialogOpen(true)
     }
-  }
-
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  }
+  }, [data?.earlyAccess])
 
   return (
     <div className="mx-auto flex min-h-screen max-w-4xl flex-col p-6 font-sans">
@@ -400,151 +602,7 @@ export default function App() {
         )}
 
         {/* COMPARAISON */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={sectionVariants}
-          className="space-y-4"
-        >
-          <h3 className="text-center text-2xl font-semibold">
-            <EvoDirecteWord>evoDirecte</EvoDirecteWord> 🗿 vs EcoleDirecte 💩
-          </h3>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Fonctionnalité</TableHead>
-                <TableHead className="text-center">EcoleDirecte</TableHead>
-                <TableHead className="text-center text-primary">
-                  <EvoDirecteWord>evoDirecte</EvoDirecteWord>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>Mode Sombre Natif</TableCell>
-                <TableCell className="text-center">
-                  <X
-                    className="mx-auto h-5 w-5 text-destructive"
-                    role="img"
-                    aria-label="Non"
-                  />
-                </TableCell>
-                <TableCell className="text-center">
-                  <Check
-                    className="mx-auto h-5 w-5 text-green-500"
-                    role="img"
-                    aria-label="Oui"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Signalement des devoirs non entrés</TableCell>
-                <TableCell className="text-center">
-                  <X
-                    className="mx-auto h-5 w-5 text-destructive"
-                    role="img"
-                    aria-label="Non"
-                  />
-                </TableCell>
-                <TableCell className="text-center">
-                  <Check
-                    className="mx-auto h-5 w-5 text-green-500"
-                    role="img"
-                    aria-label="Oui"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Interface Fluide & Rapide</TableCell>
-                <TableCell className="text-center">
-                  <X
-                    className="mx-auto h-5 w-5 text-destructive"
-                    role="img"
-                    aria-label="Non"
-                  />
-                </TableCell>
-                <TableCell className="text-center">
-                  <Check
-                    className="mx-auto h-5 w-5 text-green-500"
-                    role="img"
-                    aria-label="Oui"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Organisation des devoirs par priorité</TableCell>
-                <TableCell className="text-center">
-                  <Minus
-                    className="mx-auto h-5 w-5 text-yellow-500"
-                    role="img"
-                    aria-label="Partiellement"
-                  />
-                </TableCell>
-                <TableCell className="text-center">
-                  <Check
-                    className="mx-auto h-5 w-5 text-green-500"
-                    role="img"
-                    aria-label="Oui"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Moyennes et partage de notes</TableCell>
-                <TableCell className="text-center">
-                  <X
-                    className="mx-auto h-5 w-5 text-destructive"
-                    role="img"
-                    aria-label="Non"
-                  />
-                </TableCell>
-                <TableCell className="text-center">
-                  <Check
-                    className="mx-auto h-5 w-5 text-green-500"
-                    role="img"
-                    aria-label="Oui"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Système d'amis</TableCell>
-                <TableCell className="text-center">
-                  <X
-                    className="mx-auto h-5 w-5 text-destructive"
-                    role="img"
-                    aria-label="Non"
-                  />
-                </TableCell>
-                <TableCell className="text-center">
-                  <Check
-                    className="mx-auto h-5 w-5 text-green-500"
-                    role="img"
-                    aria-label="Oui"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  Leçons type Duolingo et évals blanches fictives
-                </TableCell>
-                <TableCell className="text-center">
-                  <X
-                    className="mx-auto h-5 w-5 text-destructive"
-                    role="img"
-                    aria-label="Non"
-                  />
-                </TableCell>
-                <TableCell className="text-center">
-                  <Check
-                    className="mx-auto h-5 w-5 text-green-500"
-                    role="img"
-                    aria-label="Oui"
-                  />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </motion.div>
+        <ComparisonTable variants={sectionVariants} />
 
         {/* CTA */}
         <motion.div
@@ -571,53 +629,7 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <motion.footer
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={sectionVariants}
-        className="mt-auto flex flex-col items-center gap-4 border-t py-12"
-      >
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" title="Discord" asChild>
-            <a
-              href="https://discord.gg/softwarevo"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Rejoindre notre serveur Discord"
-            >
-              <SiDiscord style={{ color: "#5865F2" }} />
-            </a>
-          </Button>
-          <Button variant="outline" size="icon" title="WhatsApp" asChild>
-            <a
-              href="https://whatsapp.com/channel/0029VbBrcnK8vd1QRpHDvk0H"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Suivre notre chaîne WhatsApp"
-            >
-              <SiWhatsapp style={{ color: "#25D366" }} />
-            </a>
-          </Button>
-          <Button variant="outline" size="icon" title="Mail" asChild>
-            <a
-              href="mailto:evo@directe.qzz.io"
-              aria-label="Nous contacter par e-mail"
-            >
-              <Mail className="text-black dark:text-white" />
-            </a>
-          </Button>
-        </div>
-        <div className="text-sm text-muted-foreground">
-          Fait avec 🍪 et 🧋 par{" "}
-          <a
-            href="https://github.com/softwarevo"
-            className="underline hover:text-primary"
-          >
-            evoSoftware
-          </a>
-        </div>
-      </motion.footer>
+      <Footer variants={sectionVariants} />
 
       {/* Accessible live region for loading / progress text */}
       <div aria-live="polite" role="status" className="sr-only">
