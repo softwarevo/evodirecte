@@ -31,17 +31,24 @@ const EVODIRECTE_DYNPROG_URL =
 const EvoDirecteWord = memo(({ children }: { children: React.ReactNode }) => {
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+
+    // Use the click position for confetti origin
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (rect.left + rect.width / 2) / window.innerWidth;
+    const y = (rect.top + rect.height / 2) / window.innerHeight;
+
     confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
+      particleCount: 150,
+      spread: 80,
+      origin: { x, y: y || 0.6 },
+      zIndex: 9999,
     });
   };
 
   return (
     <span
       onDoubleClick={handleDoubleClick}
-      className="cursor-pointer select-none"
+      className="cursor-pointer select-none inline-block"
     >
       {children}
     </span>
@@ -349,7 +356,7 @@ export default function App() {
         <button
           type="button"
           onDoubleClick={handleLogoDoubleClick}
-          aria-label="Activer l’easter egg du logo Scool
+          aria-label="Activer l’easter egg du logo Scool"
           className="bg-transparent border-none p-0 cursor-pointer"
         >
           <img 
