@@ -59,13 +59,13 @@ const ComparisonTable = memo(({ variants }: { variants: Variants }) => {
       variants={variants}
       className="space-y-4"
     >
-      <h3 className="text-2xl font-semibold text-center"><EvoDirecteWord>evoDirecte</EvoDirecteWord> 🗿 vs EcoleDirecte 💩</h3>
+      <h3 className="text-2xl font-semibold text-center"><EvoDirecteWord>Scool</EvoDirecteWord> 🗿 vs EcoleDirecte 💩</h3>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Fonctionnalité</TableHead>
             <TableHead className="text-center">EcoleDirecte</TableHead>
-            <TableHead className="text-center text-primary"><EvoDirecteWord>evoDirecte</EvoDirecteWord></TableHead>
+            <TableHead className="text-center text-primary"><EvoDirecteWord>Scool</EvoDirecteWord></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -129,7 +129,7 @@ const Footer = memo(({ variants }: { variants: Variants }) => {
           asChild
         >
           <a
-            href="https://discord.gg/softwarevo"
+            href="https://discord.gg/" // There is no official server yet
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -162,7 +162,7 @@ const Footer = memo(({ variants }: { variants: Variants }) => {
         </Button>
       </div>
       <div className="text-sm text-muted-foreground">
-        Fait avec 🍪 et 🧋 par <a href="https://github.com/softwarevo" className="underline hover:text-primary">evoSoftware</a>
+        Fait avec 🍪 et 🧋 par <a href="https://github.com/Scool-app" className="underline hover:text-primary">l'équipe Scool</a>
       </div>
     </motion.footer>
   );
@@ -302,10 +302,10 @@ export default function App() {
             </DialogTitle>
             <DialogDescription className="text-base space-y-4 pt-4">
               <p>
-                Nous avons décidé d’abandonner evoMoyenne pour un tout nouveau projet nommé <strong><EvoDirecteWord>evoDirecte</EvoDirecteWord></strong>.
+                Nous avons décidé d’abandonner evoMoyenne pour un tout nouveau projet nommé <strong><EvoDirecteWord>Scool</EvoDirecteWord></strong>.
               </p>
               <p>
-                Rassurez-vous : <strong><EvoDirecteWord>evoDirecte</EvoDirecteWord></strong> contiendra toutes les fonctionnalités d’evoMoyenne, et même plus ! Devoirs, absences, messages, emploi du temps, révisions intelligentes et bien plus. En fait, c’est comme le vrai EcoleDirecte… Mais en mieux !
+                Rassurez-vous : <strong><EvoDirecteWord>Scool</EvoDirecteWord></strong> contiendra toutes les fonctionnalités d’evoMoyenne, et même plus ! Devoirs, absences, messages, emploi du temps, révisions intelligentes et bien plus. En fait, c’est comme le vrai EcoleDirecte… Mais en mieux !
               </p>
               <p>
                 On vous laisse explorer cette page pour en savoir plus sur le futur de votre assistant scolaire.
@@ -329,7 +329,7 @@ export default function App() {
             </DialogTitle>
             <DialogDescription className="text-base space-y-4 pt-4">
               <p>
-                L'accès à <strong>evoDirecte Seedling</strong> (la version bêta) n'est pas encore ouvert au public.
+                L'accès à <strong>Scool Seedling</strong> (la version bêta) n'est pas encore ouvert au public.
               </p>
               <p>
                 Nous travaillons dur pour t'offrir la meilleure expérience possible. Reviens très bientôt pour tester les premières fonctionnalités en avant-première !
@@ -349,12 +349,12 @@ export default function App() {
         <button
           type="button"
           onDoubleClick={handleLogoDoubleClick}
-          aria-label="Activer l’easter egg du logo evoDirecte"
+          aria-label="Activer l’easter egg du logo Scool
           className="bg-transparent border-none p-0 cursor-pointer"
         >
           <img 
             src="/logo.svg" 
-            alt="evoDirecte Logo" 
+            alt="Scool Logo" 
             className={`h-12 w-12 transition-all dark:invert ${isPixelated ? 'pixelated' : ''}`} 
           />
         </button>
@@ -388,8 +388,8 @@ export default function App() {
           variants={sectionVariants}
           className="text-center space-y-4"
         >
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">🏗️ <EvoDirecteWord>evoDirecte</EvoDirecteWord> est en chantier.</h1>
-          <h2 className="text-xl text-muted-foreground"><EvoDirecteWord>evoDirecte</EvoDirecteWord>, c’est ton assistant scolaire indispensable.</h2>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">🏗️ <EvoDirecteWord>Scool</EvoDirecteWord> est en chantier.</h1>
+          <h2 className="text-xl text-muted-foreground"><EvoDirecteWord>Scool</EvoDirecteWord>, c’est ton assistant scolaire indispensable.</h2>
         </motion.div>
 
         {/* PROGRESSION */}
@@ -432,13 +432,13 @@ export default function App() {
           variants={sectionVariants}
           className="text-center space-y-4 py-12"
         >
-          <h2 className="text-3xl font-bold">Tu veux tester <EvoDirecteWord>evoDirecte</EvoDirecteWord> en avance ?</h2>
+          <h2 className="text-3xl font-bold">Tu veux tester <EvoDirecteWord>Scool</EvoDirecteWord> en avance ?</h2>
           <div className="flex flex-col items-center gap-2">
             <Button size="lg" onClick={handleSeedlingClick}>
-              Ouvrir evoDirecte Seedling
+              Ouvrir Scool Seedling
             </Button>
             <p className="text-sm text-muted-foreground/60">
-              Teste evoDirecte en avant-première et obtiens un badge spécial dans l’app finale
+              Teste Scool en avant-première et obtiens un badge spécial dans l’app finale
             </p>
           </div>
         </motion.div>
